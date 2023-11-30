@@ -1,6 +1,7 @@
 use rocket::{
     http::ContentType,
     response::{Responder, Response},
+    serde::{Deserialize, Serialize},
 };
 use scraper::element_ref::Select;
 use scraper::{Html, Selector};
@@ -54,7 +55,8 @@ fn rocket() -> _ {
     rocket::build().mount("/", routes![releasesForToday])
 }
 
-#[derive(rocket::serde::Serialize)]
+#[derive(Serialize)]
+#[serde(crate = "rocket::serde")]
 pub struct Release {
     title: String,
     date: String,

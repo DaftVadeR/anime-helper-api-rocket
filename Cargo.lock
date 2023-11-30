@@ -62,6 +62,7 @@ dependencies = [
  "reqwest",
  "rocket",
  "scraper",
+ "serde",
  "xml",
 ]
 
