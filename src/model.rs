@@ -14,7 +14,7 @@ pub struct Release {
     pub title: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct ReleaseForCreate {
     pub title: String,
 }

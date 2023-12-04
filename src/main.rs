@@ -7,6 +7,8 @@ use tokio::net::TcpListener;
 mod api;
 mod utils;
 
+pub const DEFAULT_TIMEZONE: chrono_tz::Tz = chrono_tz::Africa::Johannesburg;
+
 #[tokio::main]
 async fn main() {
     // Setup the Axum app with a single route handling GET requests
@@ -23,14 +25,14 @@ async fn main() {
         .unwrap();
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct Release {
     time_str: String,
     title: String,
-
+    image_url: String,
+    aired: bool,
     #[serde(with = "ts_seconds")]
     date: DateTime<Utc>,
-    date_str: String,
 }
 
 async fn get_releases() -> Json<Vec<Release>> {

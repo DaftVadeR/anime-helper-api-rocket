@@ -7,7 +7,7 @@ use std::sync::{Arc, Mutex};
 
 pub type Result<T> = core::result::Result<T, Error>;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ReleasesController {
     // tickets_store: Arc<Mutex<Vec<Option<Ticket>>>>,
 }
