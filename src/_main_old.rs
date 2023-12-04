@@ -70,27 +70,6 @@ fn get_td_text(row: &scraper::ElementRef, index: usize) -> String {
         .map_or(String::new(), |td| td.text().collect())
 }
 
-// async fn get_request(url: &str) -> Result<reqwest::Response, reqwest::Error> {
-async fn get_request(url: &str) -> reqwest::Response {
-    let client = reqwest::Client::new();
-
-    let res = client
-        .get(url)
-        .header(
-            "The-Timezone-IANA",
-            reqwest::header::HeaderValue::from_static("Africa/Johannesburg"),
-        )
-        .send()
-        .await
-        .unwrap();
-
-    if !res.status().is_success() {
-        panic!("Request failed with status: {}", res.status());
-    }
-
-    res
-}
-
 async fn get_anime_for_today() -> Vec<Release> {
     let mut schedule_data: Vec<Release> = Vec::new();
 
