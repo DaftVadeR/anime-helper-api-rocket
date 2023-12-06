@@ -1,13 +1,12 @@
-use crate::{utils, DEFAULT_TIMEZONE};
+use crate::{utils, API_BASE, DEFAULT_TIMEZONE};
 use axum::Json;
 use chrono::{Timelike, Utc};
-
-use reqwest::Response;
-use scraper::{Html, Selector};
 
 use crate::Release;
 use serde::Deserialize;
 use utils::RequestGetter;
+
+use url::{ParseError, Url};
 
 #[derive(Debug)]
 struct UnprocessedRelease {
@@ -77,7 +76,7 @@ impl ReleasesController {
     // }
 
     pub async fn get_anime_for_today() -> Vec<Release> {
-        // let response = ReleasesController::get_page_request("https://subsplease.org/").await;
+        // let response = ReleasesController::get_page_request(API_BASE).await;
         // let unprocessed_releases: Vec<UnprocessedRelease> =
         //     Self::parse_request_for_release_info(response).await;
 
@@ -86,11 +85,7 @@ impl ReleasesController {
         println!("Testing {}", timezone_str);
 
         let response = ReleasesController::get_json_request(
-            format!(
-                "https://subsplease.org/api/?f=schedule&h=true&tz={}",
-                timezone_str
-            )
-            .as_str(),
+            format!("{}/api/?f=schedule&h=true&tz={}", API_BASE, timezone_str).as_str(),
         )
         .await
         .json::<ApiRequest>()
@@ -124,7 +119,9 @@ impl ReleasesController {
                 title: release.title,
                 aired: release.aired,
                 time_str: release.time,
-                image_url: format!("https://subsplease.org{}", release.image_url),
+                slug: release.page.clone(),
+                url: format!("{}/{}", API_BASE, release.page),
+                image_url: format!("{}/{}", API_BASE, release.image_url),
                 date: now.with_timezone(&Utc),
             });
         }

@@ -73,7 +73,7 @@ fn get_td_text(row: &scraper::ElementRef, index: usize) -> String {
 async fn get_anime_for_today() -> Vec<Release> {
     let mut schedule_data: Vec<Release> = Vec::new();
 
-    let response = get_request("https://subsplease.org/").await;
+    let response = get_request(API_BASE).await;
 
     let bdy = response.text().await.expect("Error unwrapping response");
 

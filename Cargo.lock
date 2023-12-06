@@ -73,6 +73,7 @@ dependencies = [
  "tower-cookies",
  "tower-http",
  "tzfile",
+ "url",
  "uuid",
  "xml",
 ]

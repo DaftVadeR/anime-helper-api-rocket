@@ -9,6 +9,8 @@ mod utils;
 
 pub const DEFAULT_TIMEZONE: chrono_tz::Tz = chrono_tz::Africa::Johannesburg;
 
+pub const API_BASE: &str = "https://subsplease.org";
+
 #[tokio::main]
 async fn main() {
     // Setup the Axum app with a single route handling GET requests
@@ -31,6 +33,8 @@ struct Release {
     title: String,
     image_url: String,
     aired: bool,
+    slug: String,
+    url: String,
     #[serde(with = "ts_seconds")]
     date: DateTime<Utc>,
 }
