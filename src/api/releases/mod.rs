@@ -1,12 +1,12 @@
-use crate::{utils, API_BASE, DEFAULT_TIMEZONE};
+use crate::{utils, DEFAULT_TIMEZONE, ANIME_API_BASE};
 use axum::Json;
 use chrono::{Timelike, Utc};
 
 use crate::Release;
-use serde::Deserialize;
-use utils::RequestGetter;
 
+use serde::Deserialize;
 use url::{ParseError, Url};
+use utils::RequestGetter;
 
 #[derive(Debug)]
 struct UnprocessedRelease {
@@ -85,7 +85,8 @@ impl ReleasesController {
         println!("Testing {}", timezone_str);
 
         let response = ReleasesController::get_json_request(
-            format!("{}/api/?f=schedule&h=true&tz={}", API_BASE, timezone_str).as_str(),
+            format!("{}/api/?f=schedule&h=true&tz={}", ANIME_API_BASE, timezone_str).as_str(),
+            Some(true)
         )
         .await
         .json::<ApiRequest>()
@@ -120,8 +121,8 @@ impl ReleasesController {
                 aired: release.aired,
                 time_str: release.time,
                 slug: release.page.clone(),
-                url: format!("{}/{}", API_BASE, release.page),
-                image_url: format!("{}/{}", API_BASE, release.image_url),
+                url: format!("{}/{}", ANIME_API_BASE, release.page),
+                image_url: format!("{}/{}", ANIME_API_BASE, release.image_url),
                 date: now.with_timezone(&Utc),
             });
         }

@@ -1,3 +1,4 @@
+use api::news::NewsController;
 use api::releases::ReleasesController;
 use axum::{routing::get, Json, Router};
 use chrono::{serde::ts_seconds, DateTime, Utc};
@@ -9,13 +10,16 @@ mod utils;
 
 pub const DEFAULT_TIMEZONE: chrono_tz::Tz = chrono_tz::Africa::Johannesburg;
 
-pub const API_BASE: &str = "https://subsplease.org";
+pub const ANIME_API_BASE: &str = "https://subsplease.org";
+
+pub const NEWS_API_BASE: &str = "https://www.reddit.com";
+pub const NEWS_API_URI: &str = "/r/animenews/top";
 
 #[tokio::main]
 async fn main() {
     // Setup the Axum app with a single route handling GET requests
     let app = Router::new()
-        // .route("/news", get(get_news))
+        .route("/news", get(get_news))
         .route("/releases", get(get_releases));
 
     // Run the server
@@ -46,5 +50,15 @@ async fn get_releases() -> Json<Vec<Release>> {
     match releases {
         Ok(releases) => releases,
         Err(_) => panic!("Error getting releases"),
+    }
+}
+
+async fn get_news() -> Json<Vec<Release>> {
+    // Dummy vector of Release structs
+    let news = NewsController::list_top_anime_reddit().await;
+
+    match news {
+        Ok(news) => news,
+        Err(_) => panic!("Error getting news"),
     }
 }
